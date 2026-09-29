@@ -93,26 +93,25 @@ else
     fi
 fi
 
-# 5. Создание репозитория в организации с флагами --template и --public
-info "Создание репозитория в GitHub ($ORG/$REPO_NAME) со статусом Template..."
+# 5. Создание публичного репозитория в организации
+info "Создание репозитория в GitHub ($ORG/$REPO_NAME)..."
 
-CREATE_OUTPUT=$(gh repo create "$ORG/$REPO_NAME" \
-    --template \
-    --public \
-    --source=. \
-    --remote=origin \
-    --push 2>&1) || {
-    # Если репозиторий уже создан, связываем remote и пушим
-    if echo "$CREATE_OUTPUT" | grep -qi "already exists"; then
-        warn "Репозиторий $ORG/$REPO_NAME уже существует на GitHub. Обновление remote и пуш..."
-        git remote remove origin 2>/dev/null || true
-        git remote add origin "https://github.com/$ORG/$REPO_NAME.git"
-        git push -u origin main
-    else
-        error "Ошибка при создании репозитория: $CREATE_OUTPUT"
-        exit 1
-    fi
-}
+if ! gh repo view "$ORG/$REPO_NAME" &>/dev/null; then
+    gh repo create "$ORG/$REPO_NAME" \
+        --public \
+        --source=. \
+        --remote=origin \
+        --push
+else
+    warn "Репозиторий $ORG/$REPO_NAME уже существует на GitHub. Обновление remote и пуш..."
+    git remote remove origin 2>/dev/null || true
+    git remote add origin "https://github.com/$ORG/$REPO_NAME.git"
+    git push -u origin main
+fi
+
+# Делаем репозиторий шаблоном
+info "Установка флага Template Repository..."
+gh repo edit "$ORG/$REPO_NAME" --template
 
 success "Репозиторий-шаблон успешно опубликован: https://github.com/$ORG/$REPO_NAME"
 

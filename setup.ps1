@@ -14,6 +14,8 @@ param (
     [string]$RepoName = "diploma-template"
 )
 
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 $ErrorActionPreference = "Stop"
 
 function Write-Info { param([string]$msg) Write-Host "[INFO] $msg" -ForegroundColor Cyan }
@@ -86,16 +88,27 @@ if (-not $hasCommits) {
 }
 
 # 5. Создание репозитория
-Write-Info "Создание репозитория $Organization/$RepoName со статусом Template..."
+Write-Info "Создание публичного репозитория $Organization/$RepoName в GitHub..."
+$repoExists = $false
 try {
-    gh repo create "$Organization/$RepoName" --template --public --source=. --remote=origin --push
-    Write-Success "Репозиторий успешно создан и опубликован!"
+    gh repo view "$Organization/$RepoName" 2>$null | Out-Null
+    $repoExists = $true
 } catch {
-    Write-WarningMsg "Репозиторий возможно уже существует, попытка настроить remote и запушить..."
+    $repoExists = $false
+}
+
+if (-not $repoExists) {
+    gh repo create "$Organization/$RepoName" --public --source=. --remote=origin --push
+} else {
+    Write-WarningMsg "Репозиторий уже существует, привязываем remote и отправляем изменения..."
     git remote remove origin 2>$null
     git remote add origin "https://github.com/$Organization/$RepoName.git"
     git push -u origin main
 }
+
+Write-Info "Установка флага Template Repository..."
+gh repo edit "$Organization/$RepoName" --template
+Write-Success "Репозиторий-шаблон успешно опубликован: https://github.com/$Organization/$RepoName"
 
 # 6. Настройка Branch Protection
 Write-Info "Настройка защиты ветки main (обязательный PR + 1 approve)..."
