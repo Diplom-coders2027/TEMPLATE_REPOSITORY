@@ -37,8 +37,8 @@
 
 ```bash
 # 1. Склонировать репозиторий
-git clone https://github.com/<ОРГАНИЗАЦИЯ>/<РЕПОЗИТОРИЙ>.git
-cd <РЕПОЗИТОРИЙ>
+git clone https://github.com/Diplom-coders2027/<ВАШ_РЕПОЗИТОРИЙ>.git
+cd <ВАШ_РЕПОЗИТОРИЙ>
 
 # 2. Скопировать конфигурацию переменных окружения
 cp .env.example .env
