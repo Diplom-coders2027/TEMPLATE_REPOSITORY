@@ -146,8 +146,8 @@ try {
 
 # 7. Метки
 Write-Info "Настройка меток Issues..."
-gh label create "stage" --color "0075ca" --description "Сдача контрольного этапа ВКР" --repo "$Organization/$RepoName" --force 2>$null
-gh label create "need-feedback" --color "d93f0b" --description "Требуется ответ или ревью научного руководителя" --repo "$Organization/$RepoName" --force 2>$null
+gh label create "stage" --color "0075ca" --description "Сдача контрольного этапа проекта" --repo "$Organization/$RepoName" --force 2>$null
+gh label create "need-feedback" --color "d93f0b" --description "Требуется ответ или ревью преподавателя" --repo "$Organization/$RepoName" --force 2>$null
 
 Write-Host ""
 Write-Host "==============================================================================" -ForegroundColor Green

@@ -145,8 +145,8 @@ fi
 
 # 7. Настройка базовых меток (labels)
 info "Настройка меток GitHub Issues..."
-gh label create "stage" --color "0075ca" --description "Сдача контрольного этапа ВКР" --repo "$ORG/$REPO_NAME" --force &>/dev/null || true
-gh label create "need-feedback" --color "d93f0b" --description "Требуется ответ или ревью научного руководителя" --repo "$ORG/$REPO_NAME" --force &>/dev/null || true
+gh label create "stage" --color "0075ca" --description "Сдача контрольного этапа проекта" --repo "$ORG/$REPO_NAME" --force &>/dev/null || true
+gh label create "need-feedback" --color "d93f0b" --description "Требуется ответ или ревью преподавателя" --repo "$ORG/$REPO_NAME" --force &>/dev/null || true
 
 echo ""
 echo -e "${GREEN}==============================================================================${NC}"
