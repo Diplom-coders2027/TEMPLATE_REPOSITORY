@@ -130,7 +130,8 @@ $protectionJson = @"
 
 $tempJsonPath = [System.IO.Path]::GetTempFileName()
 try {
-    [System.IO.File]::WriteAllText($tempJsonPath, $protectionJson, [System.Text.Encoding]::UTF8)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($tempJsonPath, $protectionJson, $utf8NoBom)
     gh api --method PUT `
       -H "Accept: application/vnd.github+json" `
       -H "X-GitHub-Api-Version: 2022-11-28" `
