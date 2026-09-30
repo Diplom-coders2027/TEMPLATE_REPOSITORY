@@ -167,8 +167,7 @@ vendor/
 *.d
 CMakeCache.txt
 CMakeFiles/
-cmake_install.cmake
-Makefile
+!/Makefile
 *.ninja
 cmake-build-*/
 build/
